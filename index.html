@@ -9,7 +9,7 @@
 
 		<!-- Webapp Config -->
 		<meta name="viewport" content="width=device-width, user-scalable=no" />
-		<link rel="apple-touch-icon" href="./icon.png?v=1.1" />
+		<link rel="apple-touch-icon" href="./icon.png?v=1.2" />
 		<meta name="apple-mobile-web-app-title" content="kkcals" />
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta
@@ -17,11 +17,11 @@
 			content="black-translucent"
 		/>
 
-        <!-- Icon Font -->
-        <link rel="stylesheet" href="icons/css/icons.css">
-        <link rel="stylesheet" href="icons/css/animation.css">
+		<!-- Icon Font -->
+		<link rel="stylesheet" href="icons/css/icons.css" />
+		<link rel="stylesheet" href="icons/css/animation.css" />
 
-        <!-- Custom Font -->
+		<!-- Custom Font -->
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
@@ -73,16 +73,14 @@
 				color: var(--ternary);
 			}
 
-            .icon-button {
-                font-size: 1.5rem;
-                padding: 1rem;
-            }
+			.icon-button {
+				font-size: 1.5rem;
+				padding: 1rem;
+			}
 
-            .mini-button {
-                display: inline-block;
-                color: var(--secondary);
-                font-size: 0.7rem;
-                padding: 0.2rem;
+			h1 {
+                font-size: 1.5rem;
+                margin-bottom: 0.5rem;
             }
 
 			/* Summary */
@@ -120,7 +118,7 @@
 			/* Item list */
 
 			.items {
-				min-height: 50vh;
+				min-height: 100vh;
 			}
 
 			.no-items-message {
@@ -158,6 +156,8 @@
 			/* Add item */
 
 			.add {
+                position: sticky;
+                bottom: 0;
 				border: 0.5rem solid var(--secondary);
 			}
 
@@ -181,6 +181,22 @@
 				outline: none;
 				border: 1px solid var(--ternary);
 			}
+
+            .scroll-to-favorites {
+                background: var(--secondary);
+                color: var(--ternary);
+                font-size: 0.6rem;
+
+                display: block;
+                text-align: center;
+                
+                padding: 0.5rem 0.5rem 0 0.5rem;
+            }
+
+            /* Favorites */
+            .favorites-title {
+                padding: 1rem 0.5rem 0 0.5rem;
+            }
 
 			/* Settings */
 
@@ -273,51 +289,51 @@
 				font-size: 1.3rem;
 				display: block;
 				width: 100%;
-                height: max-content;
+				height: max-content;
 				resize: none;
 
-                margin-bottom: 0.5rem;
-                padding: 0.2rem;
+				margin-bottom: 0.5rem;
+				padding: 0.2rem;
 
 				outline: none;
 				border: none;
 				background: color-mix(in srgb, var(--primary) 10%, transparent);
 			}
 
-            .details .details-kcals {
-                display: flex;
-                gap: 0.2rem;
-                align-items: center;
-                font-size: 1rem;
+			.details .details-kcals {
+				display: flex;
+				gap: 0.2rem;
+				align-items: center;
+				font-size: 1rem;
 
-                margin-bottom: 1rem;
-            }
+				margin-bottom: 1rem;
+			}
 
-            .details .details-kcals input {
-                min-width: 0;
-                font-size: inherit;
+			.details .details-kcals input {
+				min-width: 0;
+				font-size: inherit;
 
-                padding: 0.2rem;
+				padding: 0.2rem;
 
-                outline: none;
+				outline: none;
 				border: none;
 				background: color-mix(in srgb, var(--primary) 10%, transparent);
-            }
+			}
 
-            .details .button-bar {
-                display: flex;
-                gap: 0.2rem;
-            }
+			.details .button-bar {
+				display: flex;
+				gap: 0.2rem;
+			}
 
-            .details .button-bar button {
-                display: block;
-                width: 100%;
+			.details .button-bar button {
+				display: block;
+				width: 100%;
 
-                outline: none;
-                border: none;
-                background: var(--secondary);
-                color: var(--ternary);
-            }
+				outline: none;
+				border: none;
+				background: var(--secondary);
+				color: var(--ternary);
+			}
 		</style>
 	</head>
 	<body>
@@ -346,27 +362,6 @@
 				</p>
 			</div>
 
-			<!-- Item Add Section -->
-			<div class="add">
-				<label class="add-image">
-					<span x-show="!fileSelected">+ Add item</span>
-					<span x-show="fileSelected">Item image selected</span>
-					<input
-						x-ref="image_upload"
-						@change="fileSelected = $refs.image_upload.files.length > 0"
-						type="file"
-						accept="image/*"
-					/>
-				</label>
-				<input
-					type="text"
-					x-model="additionalDescription"
-					placeholder="+ Add textural clarification"
-					class="additional-description"
-				/>
-				<button class="button" @click="addItem">Save</button>
-			</div>
-
 			<!-- Items Section -->
 			<div class="items">
 				<div x-show="items.length==0" class="no-items-message">
@@ -388,8 +383,54 @@
 				</ul>
 			</div>
 
-			<!-- Settings Section -->
+            <!-- Add View -->
+            <div class="add">
+                <label class="add-image">
+                    <span x-show="!fileSelected">+ Take Photo</span>
+                    <span x-show="fileSelected">Item image selected</span>
+                    <input
+                        x-ref="image_upload"
+                        @change="fileSelected = $refs.image_upload.files.length > 0"
+                        type="file"
+                        accept="image/*"
+                        capture="environment"
+                    />
+                </label>
+                <input
+                    type="text"
+                    x-model="additionalDescription"
+                    placeholder="+ Add textural clarification"
+                    class="additional-description"
+                />
+                <button class="button" @click="addItem">Save</button>
+                <div class="scroll-to-favorites" @click="scrollToFavorites()">OR ADD ONE OF YOUR FAVORITES</div>
+            </div>
+
+            <!-- Favorites View -->
+            <div x-ref="favorites" class="favorites">
+                <h1 class="favorites-title">Favorites</h1>
+                <div x-show="favoriteItems.length==0" class="no-items-message">
+					No favorites yet
+				</div>
+                <ul>
+					<template x-for="(item, index) in favoriteItems">
+						<li @click="addFavoriteItem(index)" class="item">
+							<i @click.stop="removeFavoriteItem(index)" class="icon-trash-empty"></i><span
+								x-text="item.description"
+								class="item-title"
+							></span>
+							<span class="item-info">
+								<span x-text="item.mean"></span> ±
+								<span x-text="item.std"></span> kcal
+							</span>
+						</li>
+					</template>
+				</ul>
+            </div>
+
+            <!-- Settings Section -->
 			<div class="settings">
+                <h1>Settings</h1>
 				<div class="api-key">
 					<span>OpenAI API Key:</span>
 					<input type="password" x-model.persist="apiKey" />
@@ -404,9 +445,9 @@
 			<template x-if="selectedIndex != null">
 				<div class="details-background">
 					<div class="details">
-                        <textarea
+						<textarea
 							class="details-description"
-                            rows="3"
+							rows="3"
 							type="text"
 							x-model="items[selectedIndex || 0].description"
 						></textarea>
@@ -418,7 +459,7 @@
 								x-model.number.fill="items[selectedIndex || 0].mean"
 								value="0"
 							/>
-                            <span>±</span>
+							<span>±</span>
 							<input
 								class="details-std"
 								type="text"
@@ -426,36 +467,39 @@
 								x-model.number.fill="items[selectedIndex || 0].std"
 								value="0"
 							/>
-                            <span>kcal</span>
-                        </div>
+							<span>kcal</span>
+						</div>
 
-                        <div class="button-bar">
-                            <button
-                                class="icon-button"
-                                @click="removeItem(selectedIndex)"
-                            >
-                            <i class="icon-trash-empty"></i>
-                            </button>
-                            <!-- <button
-                                class="icon-button"
-                                @click="favoriteItem(selectedIndex)"
-                            >
-                            <i class="icon-star"></i>
-                            </button> -->
-                            <button
-                                class="icon-button"
-                                @click="selectedIndex = null"
-                            >
-                            <i class="icon-cancel"></i>
-                            </button>
-                        </div>
+						<div class="button-bar">
+							<button
+								class="icon-button"
+								@click="removeItem(selectedIndex)"
+							>
+								<i class="icon-trash-empty"></i>
+							</button>
+							<button
+								class="icon-button"
+								@click="favoriteItem(selectedIndex)"
+							>
+								<i class="icon-star"></i>
+							</button>
+							<button
+								class="icon-button"
+								@click="selectedIndex = null"
+							>
+								<i class="icon-cancel"></i>
+							</button>
+						</div>
 					</div>
 				</div>
 			</template>
 
 			<!-- Loading Screen -->
 			<div x-show="loading" class="loading">
-				<span><i class="icon-spin5 animate-spin"></i> Estimating these calories!</span>
+				<span
+					><i class="icon-spin5 animate-spin"></i> Estimating these
+					calories!</span
+				>
 			</div>
 		</div>
 
@@ -492,7 +536,7 @@
 					loading: false,
 
 					selectedIndex: null,
-                    
+
 					get probabilityAboveThresholdCSSClass() {
 						if (this.probabilityAboveThreshold <= 25) {
 							return 'summary-good';
@@ -509,7 +553,7 @@
 
 					cleanOldItems() {
 						// Remove items that were not from today
-						today = this.getTodayString();
+						const today = this.getTodayString();
 						this.items = this.items.filter(
 							(item) => item.date === today
 						);
@@ -617,8 +661,26 @@
 
 					favoriteItems: Alpine.$persist([]),
 					favoriteItem(index) {
-						this.favoriteItems.push(this.items[index]);
+						this.favoriteItems.push({...this.items[index]});
+                        alert("Item added to Favorites");
+                        this.selectedIndex = null;
 					},
+                    addFavoriteItem(index) {
+                        const item = {...this.favoriteItems[index]};
+                        item["date"] = this.getTodayString();
+                        this.items.push(item);
+                        alert("Item added");
+                    },
+                    removeFavoriteItem(index) {
+                        if (confirm("Are you sure you want to delete your favorite?")) {
+                            this.favoriteItems.splice(index, 1);
+                        }
+					},
+                    scrollToFavorites() {
+                        this.$refs.favorites.scrollIntoView({
+                            behavior: "smooth"
+                        })
+                    },
 
 					computeProbabilityOverThreshold(mean, std, threshold) {
 						// https://en.wikipedia.org/wiki/Normal_distribution
