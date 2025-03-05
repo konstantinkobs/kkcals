@@ -1,0 +1,308 @@
+/* General */
+
+:root {
+    --good: #90be6d;
+    --caution: #f8961e;
+    --bad: #f94144;
+
+    --primary: #252627;
+    --secondary: #564e58;
+    --ternary: #f5f4f5;
+
+    font-size: 120%;
+}
+
+*,
+*:before,
+*:after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-family: 'Roboto', serif;
+}
+
+.container {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.button {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 1rem;
+    outline: none;
+    border: none;
+    background: var(--primary);
+    color: var(--ternary);
+}
+
+.icon-button {
+    font-size: 1.5rem;
+    padding: 1rem;
+}
+
+h1 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Summary */
+
+.summary {
+    padding: 2.5rem 1.5rem 1.5rem 1.5rem;
+    text-align: center;
+    color: var(--primary);
+}
+
+.summary-good {
+    background: var(--good);
+}
+
+.summary-caution {
+    background: var(--caution);
+}
+
+.summary-bad {
+    background: var(--bad);
+}
+
+.total-mean {
+    font-size: 2rem;
+}
+
+.total-std {
+    font-size: 1rem;
+}
+
+.total-probability {
+    font-size: 0.7rem;
+}
+
+/* Item list */
+
+.items {
+    min-height: 70vh;
+}
+
+.no-items-message {
+    display: block;
+    padding: 1rem;
+    text-align: center;
+    color: var(--secondary);
+}
+
+.item {
+    padding: 0.5rem;
+    list-style: none;
+    border-bottom: 1px solid var(--ternary);
+}
+
+.item-title,
+.remove-item {
+    color: var(--secondary);
+    font-size: 0.8rem;
+}
+
+.remove-item {
+    cursor: pointer;
+    color: var(--bad);
+}
+
+.item-info {
+    display: block;
+    text-align: right;
+    font-weight: bold;
+    color: var(--primary);
+    margin-top: 0.5rem;
+}
+
+/* Add item */
+
+.add {
+    position: sticky;
+    bottom: 0;
+    border: 0.5rem solid var(--secondary);
+}
+
+.add-image {
+    display: block;
+    text-align: center;
+    padding: 1rem;
+    background: var(--primary);
+    color: var(--ternary);
+}
+
+.add-image input {
+    display: none;
+}
+
+.additional-description {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 1rem;
+    outline: none;
+    border: 1px solid var(--ternary);
+}
+
+.scroll-to-favorites {
+    background: var(--secondary);
+    color: var(--ternary);
+    font-size: 0.6rem;
+
+    display: block;
+    text-align: center;
+
+    padding: 0.5rem;
+}
+
+/* Favorites */
+.favorites {
+    min-height: 70vh;
+}
+
+.favorites-title {
+    padding: 1rem 0.5rem 0 0.5rem;
+}
+
+/* Settings */
+
+.settings {
+    background: var(--ternary);
+    padding: 1rem;
+}
+
+.settings input {
+    padding: 0.5rem;
+    display: block;
+    width: 100%;
+    outline: none;
+    border: none;
+}
+
+.api-key {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.api-key * {
+    flex: 1 1 0px;
+}
+
+.calorie-threshold {
+    display: flex;
+    align-items: center;
+}
+
+.calorie-threshold * {
+    flex: 1 1 0px;
+}
+
+/* Loading screen */
+
+.loading {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: color-mix(in srgb, var(--good) 80%, transparent);
+    color: var(--primary);
+
+    padding: 2rem;
+    font-size: 2rem;
+
+    z-index: 100;
+}
+
+/* Details */
+
+.details-background {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+
+    background: color-mix(in srgb, var(--primary) 70%, transparent);
+}
+
+.details {
+    display: block;
+    background: var(--ternary);
+
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+
+    margin: 1rem;
+    padding: 1rem;
+
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.3);
+}
+
+.details .details-description {
+    font-size: 1.3rem;
+    display: block;
+    width: 100%;
+    height: max-content;
+    resize: none;
+
+    margin-bottom: 0.5rem;
+    padding: 0.2rem;
+
+    outline: none;
+    border: none;
+    background: color-mix(in srgb, var(--primary) 10%, transparent);
+}
+
+.details .details-kcals {
+    display: flex;
+    gap: 0.2rem;
+    align-items: center;
+    font-size: 1rem;
+
+    margin-bottom: 1rem;
+}
+
+.details .details-kcals input {
+    min-width: 0;
+    font-size: inherit;
+
+    padding: 0.2rem;
+
+    outline: none;
+    border: none;
+    background: color-mix(in srgb, var(--primary) 10%, transparent);
+}
+
+.details .button-bar {
+    display: flex;
+    gap: 0.2rem;
+}
+
+.details .button-bar button {
+    display: block;
+    width: 100%;
+
+    outline: none;
+    border: none;
+    background: var(--secondary);
+    color: var(--ternary);
+}
