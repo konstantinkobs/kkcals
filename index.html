@@ -595,58 +595,66 @@
 						const reader = new FileReader();
 						reader.onload = async () => {
 							const base64Image = reader.result;
-							const response = await fetch(
-								'https://api.openai.com/v1/chat/completions',
-								{
-									method: 'POST',
-									headers: {
-										'Content-Type': 'application/json',
-										Authorization: `Bearer ${this.apiKey}`,
-									},
-									body: JSON.stringify({
-										model: 'gpt-4o-2024-08-06',
-										messages: [
-											{
-												role: 'system',
-												content:
-													'You are a calorie estimation assistant. Given an image of food or drink along with a textual description, estimate the calorie content. Respond with a JSON object.',
-											},
-											{
-												role: 'user',
-												content: [
-													{
-														type: 'text',
-														text: `Estimate the calories for the following image. Use the following optional additional information for your estimate: ${this.additionalDescription}`,
-													},
-													{
-														type: 'image_url',
-														image_url: {
-															url: base64Image,
-														},
-													},
-												],
-											},
-										],
-										response_format: {
-											type: 'json_schema',
-											json_schema: jsonSchema,
+							try {
+								const response = await fetch(
+									'https://api.openai.com/v1/chat/completions',
+									{
+										method: 'POST',
+										headers: {
+											'Content-Type': 'application/json',
+											Authorization: `Bearer ${this.apiKey}`,
 										},
-									}),
+										body: JSON.stringify({
+											model: 'gpt-4o-2024-11-20',
+											messages: [
+												{
+													role: 'system',
+													content:
+														'You are a calorie estimation assistant. Given an image of food or drink along with a textual description, estimate the calorie content. Respond with a JSON object.',
+												},
+												{
+													role: 'user',
+													content: [
+														{
+															type: 'text',
+															text: `Estimate the calories for the following image. Use the following optional additional information for your estimate: ${this.additionalDescription}`,
+														},
+														{
+															type: 'image_url',
+															image_url: {
+																url: base64Image,
+															},
+														},
+													],
+												},
+											],
+											response_format: {
+												type: 'json_schema',
+												json_schema: jsonSchema,
+											},
+										}),
+									}
+								);
+
+								if (response.ok && response.status == 200) {
+									const result = await response.json();
+									const assistantMessage = JSON.parse(
+										result.choices[0].message.content
+									);
+	
+									this.items.push({
+										date: this.getTodayString(),
+										description:
+											assistantMessage.short_food_description,
+										mean: assistantMessage.mean_kcals,
+										std: assistantMessage.std_kcals,
+									});
+								} else {
+									throw new Error(JSON.stringify({ code: response.status, message: response.statusText }))
 								}
-							);
-
-							const result = await response.json();
-							const assistantMessage = JSON.parse(
-								result.choices[0].message.content
-							);
-
-							this.items.push({
-								date: this.getTodayString(),
-								description:
-									assistantMessage.short_food_description,
-								mean: assistantMessage.mean_kcals,
-								std: assistantMessage.std_kcals,
-							});
+							} catch (error) {
+								alert(`Error: ${error}`)
+							}
 
 							// Reset UI: Remove file input and reset fileSelected, clear additional text clarification
 							this.$refs.image_upload.value = '';
